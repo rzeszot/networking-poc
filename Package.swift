@@ -9,14 +9,25 @@ let package = Package(
         .macOS(.v10_15)
     ],
     products: [
-       .library(
+        .library(
+             name: "Hated",
+             targets: ["Hated"]
+        ),
+        .library(
             name: "Networking",
             targets: ["Networking"]
        )
     ],
     targets: [
         .target(
+            name: "Hated"
+        ),
+        .target(
             name: "Networking"
+        ),
+        .testTarget(
+            name: "HatedTests",
+            dependencies: ["Hated", "Networking"]
         ),
         .testTarget(
             name: "NetworkingTests",
