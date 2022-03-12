@@ -18,8 +18,8 @@ extension Response {
     }
 }
 
-private extension Response {
-    private init(status code: Int, headers: [String: String] = [:], data: Data = .empty) {
+extension Response {
+    init(status code: Int, headers: [String: String] = [:], data: Data = .empty) {
         let response = HTTPURLResponse(
             url: .example,
             statusCode: code,

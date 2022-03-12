@@ -11,6 +11,23 @@ public struct Response {
     public subscript(_ key: String) -> String? {
         response.value(forHTTPHeaderField: key)
     }
+    
+    public var cookies: [String: String] {
+        let pairs = self["Cookie"]?
+            .components(separatedBy: "; ")
+            .map { item in
+                item
+                    .split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
+                    .map(String.init)
+            }
+            .compactMap { (pair: [String]) -> (String, String) in
+                (pair[0], pair.count == 2 ? pair[1] : "")
+            }
+            ?? []
+            
+        return Dictionary(uniqueKeysWithValues: pairs)
+    }
+
 }
 
 extension Response {
