@@ -1,7 +1,7 @@
-import Networking
+import ResponseParser
 
 struct SuccessPayload: PayloadByStatusCode {
-    static let code = 200
+    static let statusCode = 200
 
     let number: Int
 }

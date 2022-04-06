@@ -1,5 +1,5 @@
 import XCTest
-import Networking
+import ResponseParser
 import Hated
 
 final class HatedTests: XCTestCase {

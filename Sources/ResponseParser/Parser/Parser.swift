@@ -15,18 +15,16 @@ public struct Parser: ExpressibleByArrayLiteral {
 
     // MARK: -
 
-    public func payload(for request: Response) throws -> Payload.Type? {
-        try payloads.first { payload in
-            try payload.satisfied(by: request)
-        }
+    public func payload(for request: HTTPURLResponse) throws -> Payload.Type? {
+        try payloads.first { try $0.satisfied(by: request) }
     }
     
-    public func parse(response: Response) throws -> Payload {
+    public func parse(response: HTTPURLResponse, data: Data) throws -> Payload {
         guard let payload = try payload(for: response) else {
-            throw PayloadNotFoundError(response: response.response)
+            throw PayloadNotFoundError(response: response)
         }
 
-        return try decode(data: response.data, payload: payload)
+        return try decode(data: data, payload: payload)
     }
 
     // MARK: -

@@ -1,5 +1,5 @@
 import Foundation
-import Networking
+import ResponseParser
 
 struct SignedPayload<T: Payload>: Payload {
     struct InvalidSignatureError: Error {
@@ -12,7 +12,7 @@ struct SignedPayload<T: Payload>: Payload {
         payload = try T(from: decoder)
     }
 
-    static func satisfied(by response: Response) throws -> Bool {
+    static func satisfied(by response: HTTPURLResponse) throws -> Bool {
         guard let signature = response["signed"] else {
             return false
         }

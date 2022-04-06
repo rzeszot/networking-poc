@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol Payload: Decodable {
-    static func satisfied(by response: Response) throws -> Bool
+    static func satisfied(by response: HTTPURLResponse) throws -> Bool
 }
 
 extension Payload {

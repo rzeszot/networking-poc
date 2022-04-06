@@ -1,17 +1,16 @@
 import XCTest
-import Networking
+import ResponseParser
 
 final class ParserTests: XCTestCase {
 
     var sut: Parser!
 
     override func setUp() {
-        sut = Parser(payloads: [
+        sut = [
             SuccessPayload.self,
-            AcceptedPayload.self,
             BadRequestPayload.self,
             SignedTeapodPayload.self
-        ], decoder: JSONDecoder.default)
+        ]
     }
 
     override func tearDown() {
@@ -21,35 +20,30 @@ final class ParserTests: XCTestCase {
     // MARK: -
 
     func test_type_success() throws {
-        let type = try sut.payload(for: .success)
-        XCTAssertNotNil(type)
-    }
-
-    func test_type_accepted() throws {
-        let type = try sut.payload(for: .accepted)
+        let type = try sut.payload(for: Fixture.success.0)
         XCTAssertNotNil(type)
     }
 
     func test_type_bad_request() throws {
-        let type = try sut.payload(for: .badRequest)
+        let type = try sut.payload(for: Fixture.badRequest.0)
         XCTAssertNotNil(type)
     }
 
     func test_type_unexpected() throws {
-        let type = try sut.payload(for: .gone)
+        let type = try sut.payload(for: Fixture.gone.0)
         XCTAssertNil(type)
     }
 
     // MARK: -
 
     func test_parse_success() throws {
-        let object = try sut.parse(response: .success)
+        let object = try sut.parse(Fixture.number42)
         XCTAssertEqual((object as? SuccessPayload)?.number, 42)
     }
 
     func test_parse_success_decoding_error() throws {
         do {
-            _ = try sut.parse(response: .shrug)
+            _ = try sut.parse(Fixture.shrug)
             XCTFail("XCTAssertThrowAwait")
         } catch {
             XCTAssertTrue(error is DecodingError)
@@ -58,7 +52,7 @@ final class ParserTests: XCTestCase {
 
     func test_parse_unexpected_code() throws {
         do {
-            _ = try sut.parse(response: .gone)
+            _ = try sut.parse(Fixture.gone)
             XCTFail("XCTAssertThrowAwait")
         } catch {
             XCTAssertTrue(error is PayloadNotFoundError)
@@ -66,20 +60,26 @@ final class ParserTests: XCTestCase {
     }
 
     func test_parse_signature_missing_signature() throws {
-        XCTAssertThrowsError(try sut.parse(response: .teapod(signed: nil))) { error in
+        XCTAssertThrowsError(try sut.parse(Fixture.teapod(signed: nil))) { error in
             XCTAssertTrue(error is PayloadNotFoundError)
         }
     }
 
     func test_parse_signature_invalid_signature() throws {
-        XCTAssertThrowsError(try sut.parse(response: .teapod(signed: false))) { error in
+        XCTAssertThrowsError(try sut.parse(Fixture.teapod(signed: false))) { error in
             XCTAssertTrue(error is SignedTeapodPayload.InvalidSignatureError)
         }
     }
 
     func test_parse_signature_success() throws {
-        let object = try sut.parse(response: .teapod(signed: true))
+        let object = try sut.parse(Fixture.teapod(signed: true))
         XCTAssertEqual((object as? SignedTeapodPayload)?.payload.temperature, 93)
     }
 
+}
+
+private extension Parser {
+    func parse(_ tuple: (response: HTTPURLResponse, data: Data)) throws -> Payload {
+        try parse(response: tuple.response, data: tuple.data)
+    }
 }

@@ -1,7 +1,7 @@
-import Networking
+import ResponseParser
 
 struct TeapodPayload: PayloadByStatusCode, Encodable, Error {
-    static let code = 418
+    static let statusCode = 418
 
     let temperature: Int
 }

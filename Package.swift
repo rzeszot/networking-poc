@@ -1,9 +1,8 @@
-// swift-tools-version:5.5
-
+// swift-tools-version:5.6
 import PackageDescription
 
 let package = Package(
-    name: "Networking",
+    name: "ResponseParser",
     platforms: [
         .iOS(.v15),
         .macOS(.v10_15)
@@ -14,8 +13,8 @@ let package = Package(
              targets: ["Hated"]
         ),
         .library(
-            name: "Networking",
-            targets: ["Networking"]
+            name: "ResponseParser",
+            targets: ["ResponseParser"]
        )
     ],
     targets: [
@@ -23,15 +22,15 @@ let package = Package(
             name: "Hated"
         ),
         .target(
-            name: "Networking"
+            name: "ResponseParser"
         ),
         .testTarget(
             name: "HatedTests",
-            dependencies: ["Hated", "Networking"]
+            dependencies: ["Hated", "ResponseParser"]
         ),
         .testTarget(
-            name: "NetworkingTests",
-            dependencies: ["Networking"]
+            name: "ResponseParserTests",
+            dependencies: ["ResponseParser"]
         )
     ]
 )

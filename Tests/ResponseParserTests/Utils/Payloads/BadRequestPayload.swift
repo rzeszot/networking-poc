@@ -1,5 +1,5 @@
-import Networking
+import ResponseParser
 
 struct BadRequestPayload: PayloadByStatusCode, Error {
-    static let code = 400
+    static let statusCode = 400
 }

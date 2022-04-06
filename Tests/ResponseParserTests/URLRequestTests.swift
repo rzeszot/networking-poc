@@ -1,5 +1,5 @@
 import XCTest
-import Networking
+import ResponseParser
 
 final class URLRequestTests: XCTestCase {
 
