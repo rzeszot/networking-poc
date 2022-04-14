@@ -21,12 +21,13 @@ let package = Package(
         .target(
             name: "Hated"
         ),
-        .target(
-            name: "ResponseParser"
-        ),
         .testTarget(
             name: "HatedTests",
-            dependencies: ["Hated", "ResponseParser"]
+            dependencies: ["Hated"]
+        ),
+
+        .target(
+            name: "ResponseParser"
         ),
         .testTarget(
             name: "ResponseParserTests",
