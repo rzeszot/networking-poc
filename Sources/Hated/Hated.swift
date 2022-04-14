@@ -8,7 +8,14 @@ public struct Hated<Object, Links> {
         self.object = object
         self.links = links
     }
+
+    struct Wrapper {
+        let links: Links
+    }
 }
+
+
+// MARK: - Decodable
 
 extension Hated: Decodable where Object: Decodable, Links: Decodable {
     public init(from decoder: Decoder) throws {
@@ -17,9 +24,15 @@ extension Hated: Decodable where Object: Decodable, Links: Decodable {
     }
 }
 
+extension Hated.Wrapper: Decodable where Links: Decodable {}
+
+// MARK: - Encodable
+
 extension Hated: Encodable where Object: Encodable, Links: Encodable {
     public func encode(to encoder: Encoder) throws {
         try object.encode(to: encoder)
         try Wrapper(links: links).encode(to: encoder)
     }
 }
+
+extension Hated.Wrapper: Encodable where Links: Encodable {}
