@@ -6,4 +6,4 @@ struct TeapodPayload: PayloadByStatusCode, Encodable, Error {
     let temperature: Int
 }
 
-typealias SignedTeapodPayload = SignedPayload<TeapodPayload>
+//typealias SignedTeapodPayload = SignedPayload<TeapodPayload>

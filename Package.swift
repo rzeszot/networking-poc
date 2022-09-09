@@ -9,23 +9,11 @@ let package = Package(
     ],
     products: [
         .library(
-             name: "Hated",
-             targets: ["Hated"]
-        ),
-        .library(
             name: "ResponseParser",
             targets: ["ResponseParser"]
        )
     ],
     targets: [
-        .target(
-            name: "Hated"
-        ),
-        .testTarget(
-            name: "HatedTests",
-            dependencies: ["Hated"]
-        ),
-
         .target(
             name: "ResponseParser"
         ),
